@@ -1,6 +1,10 @@
 const button = document.getElementById("button");
 const audioElement = document.getElementById("audio");
-
+let key = '';
+async const getKey = () => {
+    key = await fetch('https://api-endpoint.vercel.app/api/joke-teller')
+}
+getKey();
 // Disable/Enable Button
 const toggleButton = () => {
   button.disabled = !button.disabled;
@@ -9,7 +13,7 @@ const toggleButton = () => {
 // Passing Joke to VoiceRSS API
 const tellMe = (joke) => {
   VoiceRSS.speech({
-    key: "<Your API key>",
+    key: key,
     src: joke,
     hl: "en-us",
     v: "Linda",
