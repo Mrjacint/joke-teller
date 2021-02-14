@@ -1,17 +1,21 @@
 const button = document.getElementById("button");
 const audioElement = document.getElementById("audio");
-let key = "";
+
+// get key from my server
 const getKey = async () => {
-  key = await fetch("https://api-endpoint.vercel.app/api/joke-teller");
+  let key = null;
+  const data = await fetch("https://api-endpoint.vercel.app/api/joke-teller");
+  const result = await data.text();
+  return result;
 };
-getKey();
+
 // Disable/Enable Button
 const toggleButton = () => {
   button.disabled = !button.disabled;
 };
 
 // Passing Joke to VoiceRSS API
-const tellMe = (joke) => {
+const tellMe = (joke, key) => {
   VoiceRSS.speech({
     key: key,
     src: joke,
@@ -27,6 +31,8 @@ const tellMe = (joke) => {
 
 // Get joke from Joke API
 async function getJoke() {
+  // Call getKey fn for key
+  const key = await getKey();
   let joke = "";
   const apiUrl =
     "https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
@@ -39,7 +45,7 @@ async function getJoke() {
       joke = data.joke;
     }
     // Text-to -Speach
-    tellMe(joke);
+    tellMe(joke, key);
     // Disable Button
     toggleButton();
   } catch (error) {
@@ -48,6 +54,5 @@ async function getJoke() {
 }
 
 // Add event Listener
-
 button.addEventListener("click", getJoke);
 audioElement.addEventListener("ended", toggleButton);
