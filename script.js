@@ -1,9 +1,9 @@
 const button = document.getElementById("button");
 const audioElement = document.getElementById("audio");
-let key = '';
-async const getKey = () => {
-    key = await fetch('https://api-endpoint.vercel.app/api/joke-teller')
-}
+let key = "";
+const getKey = async () => {
+  key = await fetch("https://api-endpoint.vercel.app/api/joke-teller");
+};
 getKey();
 // Disable/Enable Button
 const toggleButton = () => {
